@@ -1,8 +1,10 @@
 package org.kou.pig.func;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.apache.pig.FilterFunc;
+import org.apache.pig.data.DataBag;
 import org.apache.pig.data.Tuple;
 
 public class SampleFilter extends FilterFunc {
@@ -17,11 +19,13 @@ public class SampleFilter extends FilterFunc {
 		
 		String record = (String)arg0.get(0);
 		
-		Tuple tuple = (Tuple)arg0.get(1);
+		DataBag bag = (DataBag)arg0.get(1);
 		
-		int tupleSize = tuple.size();
-		for(int i = 0;i < tupleSize;i++){
-			if(record.equals((String)tuple.get(i))){
+		Iterator<Tuple> iterator = bag.iterator();
+		while(iterator.hasNext()){
+			Tuple tuple =  iterator.next();
+			String checkerField = (String)tuple.get(1);
+			if(record.equals(checkerField)){
 				return true;
 			}
 		}
